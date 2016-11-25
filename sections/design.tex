@@ -1,0 +1,23 @@
+%  Explain your design methodology, such as your design steps, lab work
+%  partitioning, special techniques used, etc. Clearly explain any
+%  special programming considerations (e.g., explain how and why you set
+%  up control registers, how and why you check for flags, etc.)
+
+\section{Design Solution}
+\subsection{Planning}
+\subsubsection{Work Partitioning}
+Based on experience from the first lab, and personal preference, lab
+work was partitioned accordingly. The project was split into the
+embedded programming and accessory circuit design/implementation, where
+the majority of the embedded programming was assigned to Tayler Mulligan
+and the accessory timer circuit to Raymond Bamford. The partitioning was
+not strict, with members collaborating where necessary or convenient.
+
+\subsubsection{Technique and Technologies}
+Git and GithHub were utilized for the project to provide team access and
+syncing between lab computers (see
+\url{https://github.com/tamul/ceng355-lab-project}). The source code was
+split into three files: \filename{main.c} (see \ref{app:main}), containing the main program;
+\filename{analog.c} (see \ref{app:analog}), containing ADC, DAC, and frequency monitoring
+code; and \filename{lcd.c} (see \ref{app:lcd}), containing code related to the LCD; each
+with corresponding header files.

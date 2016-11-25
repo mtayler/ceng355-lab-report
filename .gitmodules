@@ -1,0 +1,3 @@
+[submodule "ceng355-lab-project"]
+	path = ceng355-lab-project
+	url = git@github.com:tamul/ceng355-lab-project.git

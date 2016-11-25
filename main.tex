@@ -1,0 +1,55 @@
+\documentclass{article}
+
+\bibliographystyle{ieeetr}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage[toc,page]{appendix}
+\usepackage[nottoc]{tocbibind}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\def\filename#1{\texttt{#1}}
+\def\codemargin{\newgeometry{left=2cm, right=2cm}}
+
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+	language=C,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\color{mygreen},
+	breakatwhitespace=false,
+	numbers=left,
+	numberstyle=\footnotesize\color{mygray},
+	stepnumber=5,
+	keepspaces=true,
+	showstringspaces=false,
+	stringstyle=\color{mymauve},
+	title=\lstname,
+}
+
+
+\title{CENG 355 Microprocessor-Based Systems Lab Project}
+\author{Tayler Mulligan	V00819591 \\ Raymond Bamford	V00000000}
+\date{Nov 24, 2016}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\input{sections/problem}
+\input{sections/design}
+\input{sections/discussion}
+
+\bibliography{main}
+
+\begin{appendices}
+\include{sections/appendices}
+\end{appendices}
+
+\end{document}
