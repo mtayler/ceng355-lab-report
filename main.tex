@@ -11,14 +11,22 @@
 \usepackage{pdfpages}
 \usepackage{hyperref}
 
+% \renewcommand*\appendixpagename{\Large Appendices}
+
 \def\filename#1{\texttt{#1}}
-\def\codemargin{\newgeometry{left=2cm, right=2cm}}
 
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mygreen}{rgb}{0,0.6,0}
+
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+\def\codedots#1{\hspace{3cm}\dots}
+
+\DeclareRobustCommand{\appendixlisting}[1]{%
+\lstinputlisting[title={#1}]{#1}}
+
 \lstset{
+	inputpath=ceng355-lab-project,
 	language=C,
 	basicstyle=\footnotesize\ttfamily,
 	commentstyle=\color{mygreen},
@@ -29,7 +37,6 @@
 	keepspaces=true,
 	showstringspaces=false,
 	stringstyle=\color{mymauve},
-	title=\lstname,
 }
 
 
@@ -48,8 +55,6 @@
 
 \bibliography{main}
 
-\begin{appendices}
 \include{sections/appendices}
-\end{appendices}
 
 \end{document}

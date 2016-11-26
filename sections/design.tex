@@ -21,3 +21,36 @@ split into three files: \filename{main.c} (see \ref{app:main}), containing the m
 \filename{analog.c} (see \ref{app:analog}), containing ADC, DAC, and frequency monitoring
 code; and \filename{lcd.c} (see \ref{app:lcd}), containing code related to the LCD; each
 with corresponding header files.
+
+\subsection{Implementation}
+The main program called functions provided by \lstinline{analog.h} and
+\lstinline{lcd.h} to sequentially initialize each component. Components
+were initialized in the order of: the ADC, the DAC, the LCD, and the
+frequency monitor. 
+
+\subsubsection{ADC Initialization}
+Initialization of the ADC requires initialization of the GPIOC interface
+(to control the POT\_EN signal of the Project Board), GPIOC (to read the
+ potentiometer value), and the ADC. The C code in
+ Listing~\ref{code:adc-gpioc-conf} comprises the initialization of the
+ GPIOC register for the ADC.
+\lstinputlisting[caption={GPIO configuration for ADC},label={code:adc-gpioc-conf},linerange={36-48},firstnumber=36]{src/analog.c}
+
+Firstly, the GPIOC clock is ensured to be running, followed by
+configuration of the pins. The pins are put in a push-pull output
+configuration at the highest speed, without any pull-up or pull-down
+resistors. The GPIOA clock is guaranteed to be running as the
+communication between the computer and STM32 micro are over the parallel
+A ports. The PA0 pin is set to ``analog'' mode. \\
+
+\lstinputlisting[caption={ADC configuration},label={code:adc-conf},linerange={50-73},firstnumber=50]{src/analog.c}
+
+Next the ADC proper is initialized: the C code in
+Listing~\ref{code:adc-conf} accomplishes this.  The HSI14 clock, which
+supplies the ADC's clock, is enabled and the ADC started in preparation
+for configuration. Lines~57-68 configure the ADC: setting the clock as
+the dedicated (HSI14) clock, selecting input channel 0 (corresponding to
+parallel port A0), continuous conversion mode is enabled to continuously
+provide the digitized value of the PA0 pin. Finally, the function
+triggers conversion to start after waiting until the ADC reports that it
+has stabilized.
