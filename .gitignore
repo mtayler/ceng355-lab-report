@@ -8,3 +8,12 @@
 *.bbl
 *.fdb_latexmk
 *.vim
+*.bib
+*.gls
+*.glsdef
+*.glo
+*.ist
+*.lof
+*.alg
+*.acr
+*.acn
