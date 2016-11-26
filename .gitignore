@@ -10,7 +10,8 @@
 *.vim
 *.bib
 *.gls
-*.glsdef
+*.glsdefs
+*.glg
 *.glo
 *.ist
 *.lof
