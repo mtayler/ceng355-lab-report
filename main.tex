@@ -2,16 +2,14 @@
 
 \bibliographystyle{ieeetr}
 
+\usepackage{xparse}
+\usepackage{graphicx}
+\usepackage[toc,acronym]{glossaries}
+\usepackage{pdfpages}
 \usepackage{listings}
 \usepackage{color}
-\usepackage{graphicx}
-\usepackage{geometry}
 \usepackage[toc,page]{appendix}
-\usepackage[nottoc]{tocbibind}
-\usepackage{pdfpages}
 \usepackage{hyperref}
-
-% \renewcommand*\appendixpagename{\Large Appendices}
 
 \def\filename#1{\texttt{#1}}
 
@@ -20,7 +18,11 @@
 
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
-\def\codedots#1{\hspace{3cm}\dots}
+\def\codedots#1{\hspace{#1}\dots}
+
+\newcommand{\lst}[5]{%
+	\lstinputlisting[caption={#1},label={#2},linerange={#3-#4},firstnumber=#3]{#5}
+}
 
 \DeclareRobustCommand{\appendixlisting}[1]{%
 \lstinputlisting[title={#1}]{#1}}
@@ -31,6 +33,7 @@
 	basicstyle=\footnotesize\ttfamily,
 	commentstyle=\color{mygreen},
 	breakatwhitespace=false,
+	breaklines=true,
 	numbers=left,
 	numberstyle=\footnotesize\color{mygray},
 	stepnumber=5,
@@ -44,10 +47,22 @@
 \author{Tayler Mulligan	V00819591 \\ Raymond Bamford	V00000000}
 \date{Nov 24, 2016}
 
+\input{sections/glossary}
+
 \begin{document}
 \maketitle
 
+\pagenumbering{roman}
 \tableofcontents
+\newpage
+\listoffigures
+\newpage
+
+\printglossary[type=\acronymtype,title=Abbreviations]
+\printglossary[style=altlist]
+\clearpage
+
+\pagenumbering{arabic}
 
 \input{sections/problem}
 \input{sections/design}

@@ -1,0 +1,61 @@
+% Makes use of `glossaries`
+
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+	\newglossaryentry{gls-#3}{name={#5},text={#5\glsadd{#3}},
+		description={#6},#1
+	}
+	\makeglossaries
+	\newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+}
+% Syntax: \newdualentry[glossary options][acronym options]{label}{abbrv}{long}{description}
+
+% ============ Acronyms/Abbreviations =============
+\newacronym{adc}{ADC}{analog-to-digital converter}
+\newacronym{dac}{DAC}{digital-to-analog converter}
+\newacronym{spi}{SPI}{serial peripheral interface}
+\newacronym{lck}{LCK}{lock}
+\newacronym{ic}{IC}{integrated circuit}
+\newacronym{soc}{SoC}{system on a chip}
+\newacronym{cr}{CR}{control register}
+\newacronym{gpio}{GPIO}{general purpose input output}
+\newacronym{msb}{MSB}{most significant bit}
+\newacronym{lsb}{LSB}{least significant bit}
+\newacronym{crc}{CRC}{cyclic redundancy check}
+\newacronym{ui}{UI}{user interface}
+% =================================================
+
+\makeglossaries
+
+% ==== Cross-Referenced Acronyms/Abbreviations ====
+\newacronym[see={[see:]spi}]{mosi}{MOSI}{master output, slave input}
+\newacronym[see={[see:]spi}]{sck}{SCK}{serial clock}
+\newacronym[see={[see:]spi}]{cpol}{CPOL}{clock polarity}
+\newacronym[see={[see:]spi}]{cpha}{CPHA}{clock phase}
+\newacronym[see={[see:]gpio}]{gpiox}{GPIOx}{GPIO port x}
+\newacronym{tim3}{TIM3}{general purpose timer 3}
+% =================================================
+
+% ================ Glossary Terms =================
+\newglossaryentry{stm}{
+	name=STM32F0DISCOVERY, 
+	description={A \gls{soc} developed by STMicroelectronics providing a
+		development board based on a Cortex-M0 microprocessor}
+}
+
+\newglossaryentry{hsi}{
+	name=HSI14,
+	description={The \SI{14}{\mega\hertz} high speed interconnect clock
+	supplying the \gls{adc}'s clock}}
+% =================================================
+
+% ================= Dual Entries ==================
+\newdualentry{lcd}{LCD}{liquid crystal display}{a visual display
+	utilizing a layer of liquid crystal between two electrodes that become
+	opaque when a voltage is applied}
+% =================================================
+
+\makeglossaries
+
+% Terms to add but not used in text
+\glsadd{gpiox}
+
