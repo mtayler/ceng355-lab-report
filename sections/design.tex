@@ -21,8 +21,27 @@ split into three files: \filename{main.c} (see \ref{app:main}), containing the m
 \filename{analog.c} (see \ref{app:analog}), containing \gls{adc},
 \gls{dac}, and frequency monitoring
 code; and \filename{lcd.c} (see \ref{app:lcd}), containing code related
-to the \gls{lcd}; each
-with corresponding header files.
+to the \gls{lcd}; each with corresponding header files. Each file
+provided initialization functions for the components and abstracted
+functions to control the components, such as:
+
+\begin{lstlisting}[numbers=none]
+void spi_init(void),
+void lcd_cmd(uint8_t data),
+void lcd_char(char c),
+\end{lstlisting}
+
+etc. in \lstinline{lcd.h}; and:
+
+\begin{lstlisting}[numbers=none]
+void dac_init(void),
+void adc_init(void)
+uint16_t adc_read(void),
+void dac_write(uint16_t),
+\end{lstlisting}
+
+etc. in \lstinline{analog.h}. See the attached listings in the
+appendices for complete definitions and declarations.
 
 \subsection{Implementation}
 The main program called functions provided by \lstinline{analog.h} and
@@ -32,14 +51,14 @@ were initialized in the order of: the \gls{adc}, the \gls{dac}, the
 
 \lst{Initialization order}{code:init-order}{42}{57}{src/main.c}
 
-\subsubsection{\gls{adc} Initialization}
+\subsubsection{ADC Initialization}
 Initialization of the gls{adc} requires initialization of the \gls{gpio}
 (port C) interface (to control the POT\_EN signal of the Project Board),
 GPIOC (to read the potentiometer value), and the gls{adc}. The C code in
 Listing~\ref{code:adc-gpioc-conf} comprises the initialization of the
 GPIOC register for the gls{adc}.
 
-\lst{\gls{gpio} configuration for \gls{adc}}{code:adc-gpioc-conf}{36}{48}{src/analog.c}
+\lst{\acrshort{gpio} configuration for \gls{adc}}{code:adc-gpioc-conf}{35}{48}{src/analog.c}
 
 Firstly, the GPIOC clock is ensured to be running, followed by
 configuration of the pins. The pins are put in a push-pull output
@@ -48,7 +67,7 @@ resistors. The GPIOA clock is guaranteed to be running as the
 communication between the computer and \gls{stm} are over the parallel
 A ports. The PA0 pin is set to ``analog'' mode. \\
 
-\lst{\gls{adc} configuration}{code:adc-conf}{50}{73}{src/analog.c}
+\lst{\acrshort{adc} configuration}{code:adc-conf}{50}{74}{src/analog.c}
 
 Next the \gls{adc} proper is initialized: the C code in
 Listing~\ref{code:adc-conf} accomplishes this.  The \gls{hsi} clock, which
@@ -60,12 +79,12 @@ provide the digitized value of the PA0 pin. Finally, the function
 triggers conversion to start after waiting until the gls{adc} reports that it
 has stabilized.
 
-\subsubsection{\gls{dac} Initialization}
+\subsubsection{DAC Initialization}
 Enabling the \gls{dac} requires configuration of the PA4 pin and
 initialization of the \gls{dac} clock. Listing~\ref{code:dac-init} shows
 the C code initializing the \gls{dac}.
 
-\lst{\gls{dac} configuration}{code:dac-init}{78}{92}{src/analog.c}
+\lst{\acrshort{dac} configuration}{code:dac-init}{78}{92}{src/analog.c}
 
 The mode of PA4 is set to an open-drain analog output, allowing a
 variable voltage to be placed on PA4, with pull-up and pull-down
@@ -73,30 +92,30 @@ pins disabled, at the highest speed setting to ensure the pin updates
 quickly. Next, the \gls{dac}'s clock is enabled and the \gls{dac}
 enabled by writing the \gls{dac}'s \gls{cr}'s enable bit.
 
-\subsubsection{\gls{lcd} Initialization}
+\subsubsection{LCD Initialization}
 
 To initialize the \gls{lcd}, the \lcd{spi}, GPIOB, and GPIOC clocks are
 all initialized (Listing~\ref{code:lcd-init-clocks}).
 
-\lst{\gls{spi}, GPIOB, GPIOC clock enable}{code:lcd-init-clocks}{15}{21}{src/lcd.c}
+\lst{\acrshort{spi}, GPIOB, GPIOC clock enable}{code:lcd-init-clocks}{15}{21}{src/lcd.c}
 
 The \gls{lck} pin (PC2) of the \gls{spi} shift-register is set to output
 mode, and the \gls{mosi} (PB5) and \gls{sck} (PB3) \gls{spi} pins are
 set to alternate function mode (Listing~\ref{code:lcd-init-output}).
 
-\lst{\gls{spi} pin mode configuration}{code:lcd-init-output}{23}{30}{src/lcd.c}
+\lst{\acrshort{spi} pin mode configuration}{code:lcd-init-output}{23}{30}{src/lcd.c}
 
 Each \gls{spi} related pin is set to push-pull mode with pull-up and
 pull-down resistors disabled and high-speed mode
 (Listing~\ref{code:lcd-init-output-conf}).
 
-\lst{\gls{spi} pin output configuration}{code:lcd-init-output-conf}{32}{45}{src/lcd.c}
+\lst{\acrshort{spi} pin output configuration}{code:lcd-init-output-conf}{32}{45}{src/lcd.c}
 
 After configuring the output pins, \gls{tim3} is configured, allowing
 \gls{spi} writes to be delayed and the \gls{lcd} time to complete
 the commands sent:
 
-\lst{\gls{tim3} configuration}{code:lcd-tim3-conf}{47}{62}{src/lcd.c}
+\lst{\acrshort{tim3} configuration}{code:lcd-tim3-conf}{47}{62}{src/lcd.c}
 
 The clock for \gls{tim3} is enabled, then the clock is configured to use
 buffered auto-reload, count down from the set \lstinline{CNT} register
@@ -113,14 +132,18 @@ possible, writing to the \lstinline{EGR} register is a carry-over from
 other timer initializations and is not necessary in this case; then, the
 \lstinline{MAX\_DELAY} value (the maximum time the LCD will take to
 execute a command) is loaded into the timer's \lstinline{CNT}
-register, and the timer finally started.
+register, and the timer finally started. This timer is utilized
+by checking the \lstinline{CNT} value rather than the updates generated
+for the purpose of allowing a potentially shorter delay. In the end this
+potential for a shorter delay was not utilized, however checking the
+\lstinline{CNT} register rather than an update bit was retained.
 
 Next, in Listing~\ref{code:spi-init}, \gls{spi} is configured and
 enabled with: unidirectional transmit, master mode, a data-size of 8
-bits, a falling edge clock pulse, software chip select, a 256 baud-rate
+bits, \gls{cpol} and \gls{cpha} are set for a falling edge clock pulse, software chip select, a 256 baud-rate
 prescaler, \gls{msb} first output, and a 7 bit \gls{crc} polynomial.
 
-\lst{\gls{spi} initialization}{code:spi-init}{64}{78}{src/lcd.c}
+\lst{\acrshort{spi} initialization}{code:spi-init}{64}{78}{src/lcd.c}
 
 Finally, in Listing~\ref{code:lcd-init}, the command interface and
 the display of the \gls{lcd} are initialized: the \gls{lcd} is set to a
@@ -129,4 +152,72 @@ homed with display shift disabled and cursor movement direction set to
 the right, cursor blinking being disabled. The persistent, unchanging
 characters of the \gls{ui} are then written to the \gls{lcd}.
 
-\lst{\gls{lcd} initialization}{code:lcd-init}{80}{113}{src/lcd.c}
+\lst{\acrshort{lcd} initialization}{code:lcd-init}{80}{114}{src/lcd.c}
+
+\subsubsection{Frequency Monitor Initialization}
+
+Initialization of the frequency monitor required the GPIOA and
+\gls{tim2} clocks to be enabled, GPIOA port 1 configured as an input,
+and configuration of \gls{tim2}. \\
+
+PA1 is first configured with the C code in Listing~\ref{code:fm-init-gpio}.
+
+\lst{GPIOA port 1 configuration}{code:fm-init-gpio}{94}{100}{src/analog.c}
+
+The GPIOA clock is first ensured to be enabled, followed by the setting
+pin PA1 to input mode with pull-up and pull-down resistors disabled.
+\gls{tim2} is then initialized, seen in Listing~\ref{code:fm-init-tim2}.
+
+\lst{\acrshort{tim2} initialization}{code:fm-init-tim2}{102}{115}{src/analog.c}
+
+\gls{tim2} is configured with a buffered auto-reload in count up mode,
+with stop on overflow set and updates events enabled with interrupts
+only enabled for overflow. This allows the timer to notify in the event
+of an interrupt and avoid erroneous frequencies measurements when the
+frequency drops below a corresponding period of approximately
+\SI{90}{s}. \\
+
+Next, the interrupt routines are configured through the \gls{nvic} as
+seen in Listing~\ref{code:fm-init-nvic}.
+
+\lst{\acrshort{nvic} configuration}{code:fm-init-nvic}{117}{137}{src/analog.c}
+
+The priority of the interrupt is set to 0, as it is one of only two
+interrupts that should be firing in this system. \gls{tim2} interrupts
+are enabled in the \gls{nvic} to allow notifiication of overflow, and
+interrupt generation is enabled in \gls{tim2}. The external interrupt
+line carrying the external waveform, \gls{exti1}, is mapped to PA1. The
+external interrupt line has interrupts enabled with a rising-edge
+trigger and interrupts for \gls{exti1} unmasked in the \gls{nvic} so
+they are processed. Finally, \gls{exti1} is configured to have a
+priority  of 0 in the \gls{nvic}, and enabled.
+
+\subsubsection{LCD Implementation}
+Utilization of the LCD was accomplished through the
+\lstinline{void lcd_char(char c)} and
+\lstinline{void lcd_cmd(uint8_t data)} functions. \lstinline{lcd_char}
+provides an interface to specify a character which is then translated to
+the proper LCD command and displayed at the current cursor position.
+\lstinline{lcd_cmd} does not translate it's input, instead implementing
+the transmission of 8 bits of data to the LCD over the 4 bit interface.
+Definitions of \lstinline{lcd_char} and \lstinline{lcd_cmd} can be seen
+in Listing~\ref{code:lcd-functions}
+
+\lst{LCD interface function definitions}{code:lcd-functions}{116}{163}{src/lcd.c}
+
+Both commands split the 8 bits of data to be sent into 4 bit packets to
+be sent over the 4 bit interface: where 4 bits of the data sent are
+control bits and 4 bits are data. The difference between the two
+commands resides in the control bits, where \lstinline{lcd_char} has the
+\gls{rs} bit LOW whereas \lstinline{lcd_cmd} send a HIGH \gls{rs} bit.
+\\
+
+Both functions utilize \lstinline{void spi_write(uint8_t data)}, a
+function providing an abstracted interface to utilize the 74HC164
+serial-in, parallel-out shift register which interfaces with the
+\gls{lcd}. The command ensures suitable time has passed by polling
+\gls{tim3}, where it then sets the \gls{lck} signal LOW, loads the data
+into the shift register over \gls{spi} before finally setting the
+\gls{lck} pin HIGH again and resets the \gls{tim3} delay counter.
+
+\subsection{Test Procedures}
