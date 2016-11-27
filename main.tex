@@ -22,7 +22,7 @@
 \def\codedots#1{\hspace{#1}\dots}
 
 \newcommand{\lst}[5]{%
-	\lstinputlisting[caption={#1},label={#2},linerange={#3-#4},firstnumber=#3]{#5}
+	\lstinputlisting[caption={#1 (\lstinline{#5})},label={#2},linerange={#3-#4},firstnumber=#3]{#5}
 }
 
 \DeclareRobustCommand{\appendixlisting}[1]{%
@@ -41,6 +41,7 @@
 	keepspaces=true,
 	showstringspaces=false,
 	stringstyle=\color{mymauve},
+	xrightmargin=-1em
 }
 
 

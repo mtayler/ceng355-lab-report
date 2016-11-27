@@ -94,7 +94,7 @@ enabled by writing the \gls{dac}'s \gls{cr}'s enable bit.
 
 \subsubsection{LCD Initialization}
 
-To initialize the \gls{lcd}, the \lcd{spi}, GPIOB, and GPIOC clocks are
+To initialize the \gls{lcd}, the \gls{spi}, GPIOB, and GPIOC clocks are
 all initialized (Listing~\ref{code:lcd-init-clocks}).
 
 \lst{\acrshort{spi}, GPIOB, GPIOC clock enable}{code:lcd-init-clocks}{15}{21}{src/lcd.c}
@@ -219,5 +219,33 @@ serial-in, parallel-out shift register which interfaces with the
 \gls{tim3}, where it then sets the \gls{lck} signal LOW, loads the data
 into the shift register over \gls{spi} before finally setting the
 \gls{lck} pin HIGH again and resets the \gls{tim3} delay counter.
+
+Displaying frequency and resistance information on the \gls{lcd} is
+accomplished by first setting up the \gls{ui} by writing the persistent
+characters, where the underscores between represent spaces which are
+updated with the read values:
+
+\begin{lstlisting}
+	F:____Hz
+	R:____Oh
+\end{lstlisting}
+
+When the frequency monitor reads an updated value (see~\ref{sec:fm-imp}
+for details) the LCD is updated with the new resistance and calculated
+frequency values. When these values are received, the code in
+Listing~\ref{code:lcd-value-update} updates the frequency of the \gls{ui}.
+
+\lst{LCD value update}{code:lcd-value-update}{169}{174}{src/analog.c}
+
+The value of the frequency is converted to an array of ASCII characters
+by calling \lstinline{char* num_to_ascii(uint16_t)}
+(Listing~\ref{code:num-to-ascii}) , which are then written to the LCD.
+The loop decrements to read the array from end to start, as the way
+\lstinline{num_to_ascii} operates stores the digits least significant
+digit first. The same method is used to update the resistance value.
+
+\lst{Convert a value to ASCII characters}{code:num-to-ascii}{165}{184}{src/lcd.c}
+
+\subsubsection{Frequency Monitor Implementation} \label{sec:fm-imp}
 
 \subsection{Test Procedures}
