@@ -4,6 +4,7 @@
 
 \usepackage{xparse}
 \usepackage{graphicx}
+\usepackage{tocbibind}
 \usepackage[toc,acronym]{glossaries}
 \usepackage{pdfpages}
 \usepackage{listings}
@@ -56,9 +57,11 @@
 
 \pagenumbering{roman}
 \tableofcontents
-\newpage
+\clearpage
 \listoffigures
-\newpage
+\clearpage
+\lstlistoflistings
+\clearpage
 
 \printglossary[type=\acronymtype,title=Abbreviations]
 \printglossary[style=altlist]
