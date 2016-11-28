@@ -85,7 +85,7 @@ initialized to zero and counted up to or past the desired value. \\
 The prescaler is set to 0, the auto-reload delay set to the lowest
 possible, writing to the \lstinline{EGR} register is a carry-over from
 other timer initializations and is not necessary in this case; then, the
-\lstinline{MAX\_DELAY} value (the maximum time the LCD will take to
+\lstinline{MAX_DELAY} value (the maximum time the LCD will take to
 execute a command) is loaded into the timer's \lstinline{CNT}
 register, and the timer finally started. This timer is utilized
 by checking the \lstinline{CNT} value rather than the updates generated
