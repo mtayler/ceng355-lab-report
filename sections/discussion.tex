@@ -4,15 +4,24 @@
 % lessons learned while doing the lab and provide advice.
 
 \section{Discussion}
-The largest factors in the design that was decided upon is the use of
-\gls{spi} to greatly simplify the \gls{lcd} interface and an abstracted
-hardware interface to allow faster development. Using \gls{spi} reduced
-wiring and \gls{gpio} port setup and avoided potential "bit banging", or
-sending a series of hard-coded bits reducing flexibility of development
-and coordination of parallelizing serialized data. \\
+\subsection{Limiting Factors}
+The largest factors in the design was that of simplicity and clearness
+over optimization and performance. As the time constraint was the
+dominant factor in this lab, decisions tended to be in favour of that
+which complimented the limited amount of time available.
 
+\subsubsection{Software Factors}
+Software factors in the design include the use of \gls{spi} to greatly
+simplify the \gls{lcd} interface and an abstracted hardware interface to
+allow faster development. Using \gls{spi} reduced wiring and \gls{gpio}
+port setup and avoided potential "bit banging", or sending a series of
+hard-coded bits reducing flexibility of development and coordination of
+parallelizing serialized data. \\
+
+\subsubsection{Hardware Factors}
 \todo{Talk about hardware stuff} \\
 
+\subsubsection{Effects}
 The simple design of the \gls{pwm} signal generator lead to a small
 range of producible frequencies with a relatively low resolution. A more
 complicated design may have been able to produce a wider range with more
