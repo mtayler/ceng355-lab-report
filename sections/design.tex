@@ -8,7 +8,16 @@ The design solution involved dividing the project into parts, including
 planning and implementation divisions which were then separated further
 to allow even distribution of the work. Information and reference was
 primarily found through the reference manuals for both the \gls{stm} and
-project board \cite{ref,board}.
+project board \cite{ref,board}: Figure~\ref{fig:system} provides and
+overview of the interaction between components.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{system-diagram}
+	\caption{System Interfacing Diagram \cite{lab-manual}}
+	\label{fig:system}
+\end{figure}
+
 \subsection{Planning}
 Before beginning the implementation phase, planning was done to
 determine who would primarily focus on which parts of the project, and
@@ -39,7 +48,7 @@ void lcd_cmd(uint8_t data),
 void lcd_char(char c),
 \end{lstlisting}
 
-etc. in \lstinline{lcd.h}; and:
+etc. in \filename{lcd.h}; and:
 
 \begin{lstlisting}[numbers=none]
 void dac_init(void),
@@ -48,7 +57,7 @@ uint16_t adc_read(void),
 void dac_write(uint16_t),
 \end{lstlisting}
 
-etc. in \lstinline{analog.h}. See the attached listings in the
+etc. in \filename{analog.h}. See the attached listings in the
 appendices for complete definitions and declarations.
 
 \input{sections/software}

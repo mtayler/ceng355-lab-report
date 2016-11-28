@@ -19,22 +19,17 @@ hard-coded bits reducing flexibility of development and coordination of
 parallelizing serialized data. \\
 
 \subsubsection{Hardware Factors}
-Hardware design factors consisted of ensuring the measured frequency from the \gls{pwm} signal generator was within the range of 0 to 9999, so that all decimal figures can fit on the \gls{lcd} display. To do this, R1, R2, and C1 from Figure \ref{fig:555} were selected as \SI{1}{\kilo \ohm}, \SI{4.7}{\kilo \ohm}, and \SI{470}{\nano \farad} respectively. The supply voltage was \SI{5}{\volt}. Using the equation f = $\frac{1.443}{(R1 + 2R2)C1}, the frequency when the optocoupler is off is $\sim 295\si{\hertz}.
+Hardware design factors consisted of ensuring the measured frequency
+from the \gls{pwm} signal generator was within the range of 0 to 9999,
+so that all decimal figures can fit on the \gls{lcd} display. To do
+this, R1, R2, and C1 from Figure \ref{fig:555} were selected as
+\SI{1}{\kilo \ohm}, \SI{4.7}{\kilo \ohm}, and \SI{470}{\nano \farad}
+respectively. The supply voltage was \SI{5}{\volt}. Using the equation
+$f = \frac{1.443}{(R1 + 2R2)C1}$, the frequency when the optocoupler is
+off is $\sim 295\si{\hertz}$.
 
-By measuring the resistance between the collector and emitter of the optocoupler transistor when the \gls{dac} is supplying $\sim 3.3\si{\volts}, this 
-
-\begin{figure}
-	\caption{555 Timer Configuration}
-	\centering
-	\includegraphics[scale=0.5]{figures/555-timer}
-	\label{fig:555}
-\end{figure}
-\begin{figure}
-	\caption{System Interfacing Diagram}
-	\centering
-	\includegraphics[scale=0.5]{figures/system-diagram}
-	\label{fig:system}
-\end{figure}
+By measuring the resistance between the collector and emitter of the
+optocoupler transistor when the \gls{dac} is supplying $\sim\SI{3.3}{\volt}$, this 
 
 \subsubsection{Effects}
 The simple design of the \gls{pwm} signal generator lead to a small
