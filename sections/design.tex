@@ -6,7 +6,9 @@
 \section{Design Solution}
 The design solution involved dividing the project into parts, including
 planning and implementation divisions which were then separated further
-to allow even distribution of the work.
+to allow even distribution of the work. Information and reference was
+primarily found through the reference manuals for both the \gls{stm} and
+project board \cite{ref,board}.
 \subsection{Planning}
 Before beginning the implementation phase, planning was done to
 determine who would primarily focus on which parts of the project, and
@@ -56,6 +58,7 @@ appendices for complete definitions and declarations.
 \subsection{Test Procedures}
 Tests of the system were conducted in a unit manner: each individual
 component was tested before testing components together.
+
 \subsubsection{External PWM Signal Generator}
 The \gls{pwm} generator was tested by building up the circuit and
 providing a variable voltage through a signal generator's DC supply
@@ -106,8 +109,10 @@ measurement was less than could be measured with the test setup.
 
 \subsubsection{Frequency Production and Measurement}
 The frequency of the resulting \gls{pwm} signal varied between
-something. The measurement error of the frequency in the available range
-was less than \SI{1}{\hertz}.
+281-535\si{\hertz} in increments of around \SI{20}{\hertz}, or steps of
+approximately \SI{400}{\ohm} of change in the potentiometer. The coarse
+resolution was caused The measurement error of the frequency in the
+available range was less than \SI{1}{\hertz}.
 
 \subsubsection{Limitations}
 The largest limitation of the system was the range of frequency the

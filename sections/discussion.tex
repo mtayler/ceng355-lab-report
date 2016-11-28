@@ -1,5 +1,28 @@
-% You need to include all block diagrams and schematics needed to
-% understand and reproduce your design. They must drawn using
-% appropriate software tools (not by hand).
+% Briefly comment on your design specifications, assumptions,
+% shortcomings, and included extra features (if any). Highlight any
+% differences between your design and stated specifications. Summarize
+% lessons learned while doing the lab and provide advice.
 
 \section{Discussion}
+The largest factors in the design that was decided upon is the use of
+\gls{spi} to greatly simplify the \gls{lcd} interface and an abstracted
+hardware interface to allow faster development. Using \gls{spi} reduced
+wiring and \gls{gpio} port setup and avoided potential "bit banging", or
+sending a series of hard-coded bits reducing flexibility of development
+and coordination of parallelizing serialized data. \\
+
+\todo{Talk about hardware stuff} \\
+
+The simple design of the \gls{pwm} signal generator lead to a small
+range of producible frequencies with a relatively low resolution. A more
+complicated design may have been able to produce a wider range with more
+coverage. The trade-off for simplicity over optimization also resulted
+in a slower response time than could be achieved with a more complex
+design. Placing the \gls{lcd} update code in the frequency monitor
+interrupt lead to simplicity with the \gls{lcd} only changing when there
+was an update and avoided interrupts being serviced while writing to the
+\gls{lcd}, however this also decreased the maximum update rate of the
+frequency monitor. This was deemed to be an acceptable trade-off as the
+measured frequency wasn't being supplied to another component other than
+the \gls{lcd} for human observation and thus the maximum speed
+observable was deemed the maximum necessary speed of measurement.

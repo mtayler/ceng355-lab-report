@@ -4,11 +4,12 @@
 
 \usepackage{xparse}
 \usepackage{graphicx}
-\usepackage{tocbibind}
+\usepackage[nottoc]{tocbibind}
 \usepackage[toc,acronym]{glossaries}
 \usepackage{pdfpages}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{todonotes}
 \usepackage[toc,page]{appendix}
 \usepackage{hyperref}
 \usepackage{siunitx}
@@ -58,8 +59,10 @@
 \input{sections/glossary}
 
 \begin{document}
+\listoftodos
 \maketitle
 
+\clearpage
 \pagenumbering{roman}
 \tableofcontents
 \clearpage
@@ -79,7 +82,7 @@
 \input{sections/discussion}
 
 \clearpage
-\bibliography{main}
+\bibliography{bibliography}
 
 \clearpage
 \include{sections/appendices}

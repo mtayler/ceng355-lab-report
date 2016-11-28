@@ -2,16 +2,15 @@
 The main program called functions provided by \lstinline{analog.h} and
 \lstinline{lcd.h} to sequentially initialize each component. Components
 were initialized in the order of: the \gls{adc}, the \gls{dac}, the
-\gls{lcd}, and the frequency monitor. Register details and other
-technical notes are available in STMicroelectronic's ``Reference
-Manual''
-\cite{ref}.
+\gls{lcd}, and the frequency monitor. Details of registers and other
+technical notes are available in the reference manual published by
+STMicroelectronic's \cite{ref}.
 
 \lst{Initialization order}{code:init-order}{42}{57}{src/main.c}
 
 \subsubsection{ADC Initialization}
 Initialization of the gls{adc} requires initialization of the \gls{gpio}
-(port C) interface (to control the POT\_EN signal of the Project Board),
+port C interface (to control the POT\_EN signal of the Project Board),
 GPIOC (to read the potentiometer value), and the gls{adc}. The C code in
 Listing~\ref{code:adc-gpioc-conf} comprises the initialization of the
 GPIOC register for the gls{adc}.
@@ -21,18 +20,16 @@ GPIOC register for the gls{adc}.
 Firstly, the GPIOC clock is ensured to be running, followed by
 configuration of the pins. The pins are put in a push-pull output
 configuration at the highest speed, without any pull-up or pull-down
-resistors. The GPIOA clock is guaranteed to be running as the
-communication between the computer and \gls{stm} are over the parallel
-A ports. The PA0 pin is set to ``analog'' mode. \\
+resistors.
 
 \lst{ADC configuration}{code:adc-conf}{50}{74}{src/analog.c}
 
 Next the \gls{adc} proper is initialized: the C code in
 Listing~\ref{code:adc-conf} accomplishes this.  The \gls{hsi} clock, which
-supplies the \gls{adc}'s clock, is enabled and the gls{adc} started in preparation
+supplies the \gls{adc}'s clock, is enabled and the \gls{adc} started in preparation
 for configuration. Lines~57-68 configure the gls{adc}: setting the clock as
 the dedicated (\gls{hsi}) clock, selecting input channel 0 (corresponding to
-parallel port A0), continuous conversion mode is enabled to continuously
+parallel pin A0), continuous conversion mode is enabled to continuously
 provide the digitized value of the PA0 pin. Finally, the function
 triggers conversion to start after waiting until the gls{adc} reports that it
 has stabilized.
@@ -115,12 +112,12 @@ characters of the \gls{ui} are then written to the \gls{lcd}.
 \subsubsection{Frequency Monitor Initialization}
 
 Initialization of the frequency monitor required the GPIOA and
-\gls{tim2} clocks to be enabled, GPIOA port 1 configured as an input,
+\gls{tim2} clocks to be enabled, GPIOA pin 1 configured as an input,
 and configuration of \gls{tim2}. \\
 
 PA1 is first configured with the C code in Listing~\ref{code:fm-init-gpio}.
 
-\lst{GPIOA port 1 configuration}{code:fm-init-gpio}{94}{100}{src/analog.c}
+\lst{GPIOA pin 1 configuration}{code:fm-init-gpio}{94}{100}{src/analog.c}
 
 The GPIOA clock is first ensured to be enabled, followed by the setting
 pin PA1 to input mode with pull-up and pull-down resistors disabled.
@@ -211,7 +208,6 @@ digits.
 
 \subsubsection{Frequency Monitor Implementation} \label{sec:fm-imp}
 
-
 The frequency monitor's main components consist of \gls{tim2} and an
 interrupt routine triggered by \gls{exti1}. Defined in
 Listing~\ref{code:fm-imp}, \lstinline{void EXTI0_1_IRQHandler()} is the
@@ -219,8 +215,7 @@ routine called when the input PA1 sees a rising-edge.
 
 \lst{Frequency monitor interrupt routines}{code:fm-imp}{139}{198}{src/analog.c}
 
-Every $2n,
-n=0,1,\dots$  executions (executions 0,2,\dots where
+Every $2n, n=0,1,\dots$  executions (executions 0,2,\dots where
 \lstinline{first_edge=1}) of this routine:
 
 \begin{enumerate}
